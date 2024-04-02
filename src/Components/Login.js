@@ -7,13 +7,12 @@ import {
   updateProfile,
 } from 'firebase/auth';
 import { auth } from '../utils/firebase';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../utils/userSlice';
+import { USER_AVATAR } from '../utils/constant';
 
 const Login = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -46,8 +45,7 @@ const Login = () => {
           const user = userCredential.user;
           updateProfile(user, {
             displayName: name.current.value,
-            photoURL:
-              'https://t4.ftcdn.net/jpg/05/72/82/85/360_F_572828530_ofzCYowQVnlOwkcoBJnZqT36klbJzWdn.jpg',
+            photoURL: USER_AVATAR,
           })
             .then(() => {
               // Profile updated!
@@ -60,14 +58,11 @@ const Login = () => {
                   photoURL: photoURL,
                 })
               );
-              navigate('/browse');
             })
             .catch((error) => {
               // An error occurred
               // ...
             });
-          console.log(user);
-          navigate('./browse');
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -85,7 +80,7 @@ const Login = () => {
           // Signed in
           const user = userCredential.user;
           console.log(user);
-          navigate('./browse');
+
           // ...
         })
         .catch((error) => {
